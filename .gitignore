@@ -1,0 +1,30 @@
+# ===== Python 缓存 =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+
+# ===== 编辑器/IDE =====
+.trae/
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ===== 系统文件 =====
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# ===== 厂家硬件资料（体积大，非原创）=====
+硬件/硬件说明书/
+
+# ===== 赛题原始文件 =====
+15届光电赛题*.pdf
+
+# ===== 临时文件 =====
+*.tmp
+*.bak
+*.log

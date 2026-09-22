@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 1250" font-family="Arial, 'Microsoft YaHei', sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#333"/>
+    </marker>
+    <style>
+      .title { font-size: 22px; font-weight: bold; fill: #1a237e; }
+      .subtitle { font-size: 13px; fill: #546e7a; }
+      .block-title { font-size: 14px; font-weight: bold; fill: #fff; }
+      .pin-label { font-size: 11px; fill: #212121; }
+      .pin-name { font-size: 10px; fill: #424242; }
+      .net-label { font-size: 10px; font-weight: bold; }
+      .legend-text { font-size: 11px; fill: #212121; }
+      .note { font-size: 10px; fill: #d32f2f; font-style: italic; }
+    </style>
+  </defs>
+
+  <!-- 背景 -->
+  <rect x="0" y="0" width="1800" height="1250" fill="#fafafa"/>
+
+  <!-- 标题 -->
+  <text x="900" y="35" text-anchor="middle" class="title">光电象棋智能车 — 硬件接线示意图</text>
+  <text x="900" y="55" text-anchor="middle" class="subtitle">K230 视觉决策 + ESP32-S3 运动控制 双芯架构 | 依据 config.py 引脚定义绘制</text>
+
+  <!-- ===================== 电源模块 ===================== -->
+  <g id="power">
+    <rect x="30" y="80" width="300" height="340" rx="8" fill="#fff3e0" stroke="#e65100" stroke-width="2"/>
+    <rect x="30" y="80" width="300" height="30" rx="8" fill="#e65100"/>
+    <rect x="30" y="100" width="300" height="10" fill="#e65100"/>
+    <text x="180" y="101" text-anchor="middle" class="block-title">电源系统 Power System</text>
+
+    <!-- 电池 -->
+    <rect x="50" y="130" width="120" height="50" rx="5" fill="#fff" stroke="#d32f2f" stroke-width="1.5"/>
+    <text x="110" y="152" text-anchor="middle" font-size="11" font-weight="bold" fill="#d32f2f">锂电池 2S</text>
+    <text x="110" y="168" text-anchor="middle" font-size="9" fill="#424242">7.4V 500mAh</text>
+    <text x="55" y="158" font-size="10" fill="#d32f2f">+</text>
+    <text x="160" y="158" font-size="10" fill="#616161">−</text>
+
+    <!-- 开关 -->
+    <rect x="200" y="140" width="60" height="30" rx="4" fill="#fff" stroke="#455a64" stroke-width="1.5"/>
+    <text x="230" y="160" text-anchor="middle" font-size="10" fill="#455a64">船型开关</text>
+
+    <!-- 7.4V 母线到开关 -->
+    <line x1="170" y1="155" x2="200" y2="155" stroke="#d32f2f" stroke-width="2.5"/>
+    <text x="180" y="148" text-anchor="middle" font-size="9" fill="#d32f2f" font-weight="bold">7.4V</text>
+
+    <!-- 滤波电容1 -->
+    <rect x="50" y="200" width="60" height="35" rx="3" fill="#fff" stroke="#6a1b9a" stroke-width="1.5"/>
+    <text x="80" y="216" text-anchor="middle" font-size="9" fill="#6a1b9a">C1</text>
+    <text x="80" y="228" text-anchor="middle" font-size="8" fill="#424242">1000μF/16V</text>
+
+    <!-- 滤波电容2 -->
+    <rect x="125" y="200" width="60" height="35" rx="3" fill="#fff" stroke="#6a1b9a" stroke-width="1.5"/>
+    <text x="155" y="216" text-anchor="middle" font-size="9" fill="#6a1b9a">C2</text>
+    <text x="155" y="228" text-anchor="middle" font-size="8" fill="#424242">1000μF/16V</text>
+
+    <!-- DC-DC -->
+    <rect x="200" y="200" width="110" height="55" rx="5" fill="#fff" stroke="#f57c00" stroke-width="1.5"/>
+    <text x="255" y="218" text-anchor="middle" font-size="10" font-weight="bold" fill="#f57c00">DC-DC 降压</text>
+    <text x="255" y="232" text-anchor="middle" font-size="9" fill="#424242">7.4V → 5V/2A</text>
+    <text x="255" y="245" text-anchor="middle" font-size="8" fill="#424242">同步整流</text>
+
+    <!-- 7.4V 到电容和DC-DC -->
+    <line x1="230" y1="170" x2="230" y2="200" stroke="#d32f2f" stroke-width="2.5"/>
+    <line x1="230" y1="200" x2="80" y2="200" stroke="#d32f2f" stroke-width="2.5"/>
+    <line x1="230" y1="200" x2="255" y2="200" stroke="#d32f2f" stroke-width="2.5"/>
+
+    <!-- GND 母线 -->
+    <line x1="50" y1="255" x2="310" y2="255" stroke="#616161" stroke-width="3"/>
+    <text x="300" y="250" text-anchor="end" font-size="9" fill="#616161" font-weight="bold">GND</text>
+    <!-- 电池负极到GND -->
+    <line x1="170" y1="155" x2="170" y2="255" stroke="#616161" stroke-width="2"/>
+    <!-- 电容负极到GND -->
+    <line x1="80" y1="235" x2="80" y2="255" stroke="#616161" stroke-width="1.5"/>
+    <line x1="155" y1="235" x2="155" y2="255" stroke="#616161" stroke-width="1.5"/>
+    <!-- DC-DC GND -->
+    <line x1="255" y1="255" x2="255" y2="255" stroke="#616161" stroke-width="1.5"/>
+
+    <!-- 5V 输出母线 -->
+    <line x1="255" y1="255" x2="255" y2="280" stroke="#f57c00" stroke-width="2.5"/>
+    <line x1="255" y1="280" x2="340" y2="280" stroke="#f57c00" stroke-width="2.5"/>
+    <text x="335" y="276" text-anchor="end" font-size="9" fill="#f57c00" font-weight="bold">5V</text>
+
+    <!-- 供电分配说明 -->
+    <text x="50" y="300" font-size="10" fill="#424242">5V 供电：ESP32-S3、舵机、传感器</text>
+    <text x="50" y="315" font-size="10" fill="#424242">7.4V 供电：TB6612 电机驱动</text>
+    <text x="50" y="330" font-size="10" fill="#424242">3.3V：ESP32/K230 板载 LDO 产生</text>
+    <text x="50" y="350" font-size="10" fill="#d32f2f" font-style="italic">※ C1/C2 就近并联在 TB6612 电源端</text>
+    <text x="50" y="365" font-size="10" fill="#d32f2f" font-style="italic">※ 所有模块 GND 共地</text>
+    <text x="50" y="380" font-size="10" fill="#d32f2f" font-style="italic">※ 舵机 5V 建议加 470μF 电容</text>
+    <text x="50" y="395" font-size="10" fill="#d32f2f" font-style="italic">※ K230 独立 5V 供电（大电流）</text>
+  </g>
+
+  <!-- ===================== ESP32-S3 ===================== -->
+  <g id="esp32">
+    <rect x="380" y="80" width="300" height="560" rx="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+    <rect x="380" y="80" width="300" height="30" rx="8" fill="#1565c0"/>
+    <rect x="380" y="100" width="300" height="10" fill="#1565c0"/>
+    <text x="530" y="101" text-anchor="middle" class="block-title">ESP32-S3 运动控制主控</text>
+
+    <!-- 左侧引脚 -->
+    <g id="esp32_left_pins">
+      <!-- GPIO1 编码器L_A -->
+      <line x1="380" y1="140" x2="340" y2="140" stroke="#00796b" stroke-width="2"/>
+      <text x="375" y="137" text-anchor="end" class="pin-label">GPIO1</text>
+      <text x="375" y="150" text-anchor="end" class="pin-name">ENC_L_A</text>
+
+      <line x1="380" y1="175" x2="340" y2="175" stroke="#00796b" stroke-width="2"/>
+      <text x="375" y="172" text-anchor="end" class="pin-label">GPIO2</text>
+      <text x="375" y="185" text-anchor="end" class="pin-name">ENC_L_B</text>
+
+      <line x1="380" y1="210" x2="340" y2="210" stroke="#7b1fa2" stroke-width="2"/>
+      <text x="375" y="207" text-anchor="end" class="pin-label">GPIO4</text>
+      <text x="375" y="220" text-anchor="end" class="pin-name">MOTOR_L_PWM</text>
+
+      <line x1="380" y1="245" x2="340" y2="245" stroke="#7b1fa2" stroke-width="2"/>
+      <text x="375" y="242" text-anchor="end" class="pin-label">GPIO5</text>
+      <text x="375" y="255" text-anchor="end" class="pin-name">MOTOR_L_IN1</text>
+
+      <line x1="380" y1="280" x2="340" y2="280" stroke="#7b1fa2" stroke-width="2"/>
+      <text x="375" y="277" text-anchor="end" class="pin-label">GPIO6</text>
+      <text x="375" y="290" text-anchor="end" class="pin-name">MOTOR_L_IN2</text>
+
+      <line x1="380" y1="315" x2="340" y2="315" stroke="#7b1fa2" stroke-width="2"/>
+      <text x="375" y="312" text-anchor="end" class="pin-label">GPIO7</text>
+      <text x="375" y="325" text-anchor="end" class="pin-name">MOTOR_R_PWM</text>
+
+      <line x1="380" y1="350" x2="340" y2="350" stroke="#c2185b" stroke-width="2"/>
+      <text x="375" y="347" text-anchor="end" class="pin-label">GPIO8</text>
+      <text x="375" y="360" text-anchor="end" class="pin-name">SERVO_PAN</text>
+
+      <line x1="380" y1="385" x2="340" y2="385" stroke="#c2185b" stroke-width="2"/>
+      <text x="375" y="382" text-anchor="end" class="pin-label">GPIO9</text>
+      <text x="375" y="395" text-anchor="end" class="pin-name">SERVO_TILT</text>
+
+      <line x1="380" y1="420" x2="340" y2="420" stroke="#388e3c" stroke-width="2"/>
+      <text x="375" y="417" text-anchor="end" class="pin-label">GPIO10</text>
+      <text x="375" y="430" text-anchor="end" class="pin-name">I2C_SCL</text>
+
+      <line x1="380" y1="455" x2="340" y2="455" stroke="#388e3c" stroke-width="2"/>
+      <text x="375" y="452" text-anchor="end" class="pin-label">GPIO11</text>
+      <text x="375" y="465" text-anchor="end" class="pin-name">I2C_SDA</text>
+
+      <line x1="380" y1="490" x2="340" y2="490" stroke="#455a64" stroke-width="2"/>
+      <text x="375" y="487" text-anchor="end" class="pin-label">GPIO14</text>
+      <text x="375" y="500" text-anchor="end" class="pin-name">TB6612_STBY</text>
+    </g>
+
+    <!-- 右侧引脚 -->
+    <g id="esp32_right_pins">
+      <line x1="680" y1="140" x2="720" y2="140" stroke="#00796b" stroke-width="2"/>
+      <text x="685" y="137" class="pin-label">GPIO15</text>
+      <text x="685" y="150" class="pin-name">MOTOR_R_IN1</text>
+
+      <line x1="680" y1="175" x2="720" y2="175" stroke="#00796b" stroke-width="2"/>
+      <text x="685" y="172" class="pin-label">GPIO16</text>
+      <text x="685" y="185" class="pin-name">MOTOR_R_IN2</text>
+
+      <line x1="680" y1="210" x2="720" y2="210" stroke="#1976d2" stroke-width="2"/>
+      <text x="685" y="207" class="pin-label">GPIO12</text>
+      <text x="685" y="220" class="pin-name">UART1_TX →K230</text>
+
+      <line x1="680" y1="245" x2="720" y2="245" stroke="#1976d2" stroke-width="2"/>
+      <text x="685" y="242" class="pin-label">GPIO13</text>
+      <text x="685" y="255" class="pin-name">UART1_RX ←K230</text>
+
+      <line x1="680" y1="280" x2="720" y2="280" stroke="#455a64" stroke-width="2"/>
+      <text x="685" y="277" class="pin-label">GPIO21</text>
+      <text x="685" y="290" class="pin-name">VL53L0X_L_XSHUT</text>
+
+      <line x1="680" y1="315" x2="720" y2="315" stroke="#455a64" stroke-width="2"/>
+      <text x="685" y="312" class="pin-label">GPIO38</text>
+      <text x="685" y="325" class="pin-name">VL53L0X_R_XSHUT</text>
+
+      <line x1="680" y1="350" x2="720" y2="350" stroke="#00796b" stroke-width="2"/>
+      <text x="685" y="347" class="pin-label">GPIO41</text>
+      <text x="685" y="360" class="pin-name">ENC_R_A</text>
+
+      <line x1="680" y1="385" x2="720" y2="385" stroke="#00796b" stroke-width="2"/>
+      <text x="685" y="382" class="pin-label">GPIO42</text>
+      <text x="685" y="395" class="pin-name">ENC_R_B</text>
+    </g>
+
+    <!-- 电源引脚 -->
+    <line x1="530" y1="640" x2="530" y2="660" stroke="#f57c00" stroke-width="2.5"/>
+    <line x1="470" y1="640" x2="470" y2="660" stroke="#616161" stroke-width="2.5"/>
+    <text x="530" y="635" text-anchor="middle" font-size="10" font-weight="bold" fill="#f57c00">5V</text>
+    <text x="470" y="635" text-anchor="middle" font-size="10" font-weight="bold" fill="#616161">GND</text>
+
+    <!-- ESP32 内部说明 -->
+    <text x="530" y="540" text-anchor="middle" font-size="11" fill="#1565c0" font-weight="bold">MicroPython</text>
+    <text x="530" y="558" text-anchor="middle" font-size="10" fill="#424242">电机PID · 航迹推算</text>
+    <text x="530" y="572" text-anchor="middle" font-size="10" fill="#424242">舵机控制 · 传感采集</text>
+    <text x="530" y="586" text-anchor="middle" font-size="10" fill="#424242">串口通信 · 避障</text>
+    <text x="530" y="610" text-anchor="middle" font-size="9" fill="#546e7a">Type-C · 预焊排针</text>
+  </g>
+
+  <!-- ===================== K230 视觉模块 ===================== -->
+  <g id="k230">
+    <rect x="1080" y="80" width="320" height="380" rx="8" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+    <rect x="1080" y="80" width="320" height="30" rx="8" fill="#2e7d32"/>
+    <rect x="1080" y="100" width="320" height="10" fill="#2e7d32"/>
+    <text x="1240" y="101" text-anchor="middle" class="block-title">K230 一体化视觉核心板</text>
+
+    <!-- 摄像头 -->
+    <rect x="1120" y="130" width="120" height="60" rx="5" fill="#fff" stroke="#558b2f" stroke-width="1.5"/>
+    <text x="1180" y="155" text-anchor="middle" font-size="11" font-weight="bold" fill="#558b2f">DVP 摄像头</text>
+    <text x="1180" y="172" text-anchor="middle" font-size="9" fill="#424242">OV2640/GC0328</text>
+    <text x="1180" y="184" text-anchor="middle" font-size="8" fill="#424242">120° 广角</text>
+    <line x1="1240" y1="190" x2="1240" y2="210" stroke="#558b2f" stroke-width="2" stroke-dasharray="4,2"/>
+    <text x="1260" y="205" font-size="9" fill="#558b2f">DVP 直插</text>
+
+    <!-- K230 核心功能 -->
+    <text x="1240" y="240" text-anchor="middle" font-size="11" fill="#2e7d32" font-weight="bold">MaixPy 固件</text>
+    <text x="1240" y="258" text-anchor="middle" font-size="10" fill="#424242">NPU 视觉算力</text>
+    <text x="1240" y="272" text-anchor="middle" font-size="10" fill="#424242">棋子识别 · 路径规划</text>
+    <text x="1240" y="286" text-anchor="middle" font-size="10" fill="#424242">决策输出 · 串口指令</text>
+
+    <!-- UART 引脚 -->
+    <line x1="1080" y1="330" x2="1040" y2="330" stroke="#1976d2" stroke-width="2"/>
+    <text x="1075" y="327" text-anchor="end" class="pin-label">UART_RX</text>
+    <text x="1075" y="340" text-anchor="end" class="pin-name">←ESP32_TX</text>
+
+    <line x1="1080" y1="365" x2="1040" y2="365" stroke="#1976d2" stroke-width="2"/>
+    <text x="1075" y="362" text-anchor="end" class="pin-label">UART_TX</text>
+    <text x="1075" y="375" text-anchor="end" class="pin-name">→ESP32_RX</text>
+
+    <!-- 电源 -->
+    <line x1="1240" y1="460" x2="1240" y2="480" stroke="#f57c00" stroke-width="2.5"/>
+    <line x1="1180" y1="460" x2="1180" y2="480" stroke="#616161" stroke-width="2.5"/>
+    <text x="1240" y="455" text-anchor="middle" font-size="10" font-weight="bold" fill="#f57c00">5V</text>
+    <text x="1180" y="455" text-anchor="middle" font-size="10" font-weight="bold" fill="#616161">GND</text>
+
+    <text x="1240" y="420" text-anchor="middle" font-size="9" fill="#d32f2f" font-style="italic">※ 建议独立 5V/2A 供电</text>
+  </g>
+
+  <!-- ===================== UART 连接线 ===================== -->
+  <g id="uart_lines">
+    <!-- ESP32 TX -> K230 RX -->
+    <path d="M 720 210 L 1040 210 L 1040 330 L 1080 330" fill="none" stroke="#1976d2" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="880" y="205" text-anchor="middle" font-size="10" fill="#1976d2" font-weight="bold">UART_TX (GPIO12) → RX</text>
+
+    <!-- K230 TX -> ESP32 RX -->
+    <path d="M 1080 365 L 1040 365 L 1040 245 L 720 245" fill="none" stroke="#1976d2" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="880" y="360" text-anchor="middle" font-size="10" fill="#1976d2" font-weight="bold">UART_RX (GPIO13) ← TX</text>
+
+    <text x="880" y="300" text-anchor="middle" font-size="11" fill="#1565c0" font-weight="bold">串口通信 115200 bps</text>
+    <text x="880" y="316" text-anchor="middle" font-size="10" fill="#424242">文本行协议，\n 结尾</text>
+  </g>
+
+  <!-- ===================== TB6612 + 电机 + 编码器 ===================== -->
+  <g id="motor_system">
+    <!-- TB6612 -->
+    <rect x="720" y="430" width="360" height="180" rx="8" fill="#fce4ec" stroke="#ad1457" stroke-width="2"/>
+    <rect x="720" y="430" width="360" height="28" rx="8" fill="#ad1457"/>
+    <rect x="720" y="448" width="360" height="10" fill="#ad1457"/>
+    <text x="900" y="450" text-anchor="middle" class="block-title">TB6612FNG 双路电机驱动</text>
+
+    <!-- 左电机通道 -->
+    <rect x="735" y="475" width="160" height="125" rx="5" fill="#fff" stroke="#880e4f" stroke-width="1"/>
+    <text x="815" y="492" text-anchor="middle" font-size="10" font-weight="bold" fill="#880e4f">通道 A (左电机)</text>
+    <text x="745" y="512" font-size="9" class="pin-label">PWMA ← GPIO4</text>
+    <text x="745" y="527" font-size="9" class="pin-label">AIN1 ← GPIO5</text>
+    <text x="745" y="542" font-size="9" class="pin-label">AIN2 ← GPIO6</text>
+    <line x1="815" y1="560" x2="815" y2="600" stroke="#7b1fa2" stroke-width="2"/>
+    <text x="745" y="580" font-size="9" class="pin-name">MOTOR_L</text>
+
+    <!-- 右电机通道 -->
+    <rect x="905" y="475" width="160" height="125" rx="5" fill="#fff" stroke="#880e4f" stroke-width="1"/>
+    <text x="985" y="492" text-anchor="middle" font-size="10" font-weight="bold" fill="#880e4f">通道 B (右电机)</text>
+    <text x="915" y="512" font-size="9" class="pin-label">PWMB ← GPIO7</text>
+    <text x="915" y="527" font-size="9" class="pin-label">BIN1 ← GPIO15</text>
+    <text x="915" y="542" font-size="9" class="pin-label">BIN2 ← GPIO16</text>
+    <line x1="985" y1="560" x2="985" y2="600" stroke="#7b1fa2" stroke-width="2"/>
+    <text x="915" y="580" font-size="9" class="pin-name">MOTOR_R</text>
+
+    <!-- STBY -->
+    <text x="900" y="618" text-anchor="middle" font-size="9" class="pin-label">STBY ← GPIO14 (高电平使能)</text>
+
+    <!-- 电源 -->
+    <line x1="760" y1="610" x2="760" y2="640" stroke="#d32f2f" stroke-width="2.5"/>
+    <text x="760" y="635" text-anchor="middle" font-size="9" font-weight="bold" fill="#d32f2f">VM 7.4V</text>
+    <line x1="820" y1="610" x2="820" y2="640" stroke="#616161" stroke-width="2.5"/>
+    <text x="820" y="635" text-anchor="middle" font-size="9" font-weight="bold" fill="#616161">GND</text>
+    <line x1="980" y1="610" x2="980" y2="640" stroke="#f57c00" stroke-width="2"/>
+    <text x="980" y="635" text-anchor="middle" font-size="9" font-weight="bold" fill="#f57c00">VCC 5V</text>
+
+    <!-- 左电机 -->
+    <rect x="735" y="650" width="160" height="60" rx="5" fill="#fff" stroke="#7b1fa2" stroke-width="1.5"/>
+    <text x="815" y="672" text-anchor="middle" font-size="10" font-weight="bold" fill="#7b1fa2">左减速电机</text>
+    <text x="815" y="688" text-anchor="middle" font-size="9" fill="#424242">6-7.4V · 1:90 · AB相编码器</text>
+    <text x="815" y="702" text-anchor="middle" font-size="8" fill="#424242">差速行走 + 脉冲采集</text>
+
+    <!-- 右电机 -->
+    <rect x="905" y="650" width="160" height="60" rx="5" fill="#fff" stroke="#7b1fa2" stroke-width="1.5"/>
+    <text x="985" y="672" text-anchor="middle" font-size="10" font-weight="bold" fill="#7b1fa2">右减速电机</text>
+    <text x="985" y="688" text-anchor="middle" font-size="9" fill="#424242">6-7.4V · 1:90 · AB相编码器</text>
+    <text x="985" y="702" text-anchor="middle" font-size="8" fill="#424242">差速行走 + 脉冲采集</text>
+
+    <!-- 电机连接线 -->
+    <line x1="815" y1="610" x2="815" y2="650" stroke="#7b1fa2" stroke-width="2"/>
+    <line x1="985" y1="610" x2="985" y2="650" stroke="#7b1fa2" stroke-width="2"/>
+  </g>
+
+  <!-- ===================== 编码器 ===================== -->
+  <g id="encoders">
+    <!-- 左编码器 -->
+    <rect x="380" y="670" width="150" height="60" rx="5" fill="#fff" stroke="#00796b" stroke-width="1.5"/>
+    <text x="455" y="692" text-anchor="middle" font-size="10" font-weight="bold" fill="#00796b">左编码器 (AB相)</text>
+    <text x="455" y="708" text-anchor="middle" font-size="9" fill="#424242">A → GPIO1</text>
+    <text x="455" y="722" text-anchor="middle" font-size="9" fill="#424242">B → GPIO2</text>
+
+    <!-- 右编码器 -->
+    <rect x="530" y="670" width="150" height="60" rx="5" fill="#fff" stroke="#00796b" stroke-width="1.5"/>
+    <text x="605" y="692" text-anchor="middle" font-size="10" font-weight="bold" fill="#00796b">右编码器 (AB相)</text>
+    <text x="605" y="708" text-anchor="middle" font-size="9" fill="#424242">A → GPIO41</text>
+    <text x="605" y="722" text-anchor="middle" font-size="9" fill="#424242">B → GPIO42</text>
+
+    <!-- 编码器到ESP32连接线 -->
+    <path d="M 455 670 L 455 140 L 340 140" fill="none" stroke="#00796b" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <path d="M 455 670 L 455 175 L 340 175" fill="none" stroke="#00796b" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <path d="M 605 670 L 605 350 L 720 350" fill="none" stroke="#00796b" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <path d="M 605 670 L 605 385 L 720 385" fill="none" stroke="#00796b" stroke-width="1.5" stroke-dasharray="5,3"/>
+  </g>
+
+  <!-- ===================== 舵机云台 ===================== -->
+  <g id="servos">
+    <rect x="380" y="760" width="300" height="100" rx="8" fill="#fce4ec" stroke="#c2185b" stroke-width="2"/>
+    <rect x="380" y="760" width="300" height="26" rx="8" fill="#c2185b"/>
+    <rect x="380" y="778" width="300" height="8" fill="#c2185b"/>
+    <text x="530" y="780" text-anchor="middle" class="block-title">二自由度云台 (SG90M 数字舵机)</text>
+
+    <rect x="400" y="800" width="130" height="50" rx="5" fill="#fff" stroke="#ad1457" stroke-width="1.5"/>
+    <text x="465" y="820" text-anchor="middle" font-size="10" font-weight="bold" fill="#ad1457">水平舵机 PAN</text>
+    <text x="465" y="836" text-anchor="middle" font-size="9" fill="#424242">PWM ← GPIO8 · 5V</text>
+
+    <rect x="540" y="800" width="130" height="50" rx="5" fill="#fff" stroke="#ad1457" stroke-width="1.5"/>
+    <text x="605" y="820" text-anchor="middle" font-size="10" font-weight="bold" fill="#ad1457">俯仰舵机 TILT</text>
+    <text x="605" y="836" text-anchor="middle" font-size="9" fill="#424242">PWM ← GPIO9 · 5V</text>
+
+    <!-- 舵机到ESP32连接线 -->
+    <line x1="465" y1="800" x2="465" y2="385" stroke="#c2185b" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <line x1="605" y1="800" x2="605" y2="385" stroke="#c2185b" stroke-width="1.5" stroke-dasharray="5,3"/>
+  </g>
+
+  <!-- ===================== I2C 传感器总线 ===================== -->
+  <g id="i2c_sensors">
+    <rect x="720" y="760" width="680" height="230" rx="8" fill="#e8f5e9" stroke="#388e3c" stroke-width="2"/>
+    <rect x="720" y="760" width="680" height="26" rx="8" fill="#388e3c"/>
+    <rect x="720" y="778" width="680" height="8" fill="#388e3c"/>
+    <text x="1060" y="780" text-anchor="middle" class="block-title">I2C 传感器总线 (SCL=GPIO10, SDA=GPIO11, 400kHz)</text>
+
+    <!-- I2C 总线 -->
+    <line x1="760" y1="820" x2="1360" y2="820" stroke="#388e3c" stroke-width="3"/>
+    <text x="760" y="815" font-size="9" fill="#388e3c" font-weight="bold">SCL</text>
+    <line x1="760" y1="845" x2="1360" y2="845" stroke="#388e3c" stroke-width="3"/>
+    <text x="760" y="840" font-size="9" fill="#388e3c" font-weight="bold">SDA</text>
+
+    <!-- MPU6050 -->
+    <rect x="770" y="870" width="170" height="100" rx="5" fill="#fff" stroke="#2e7d32" stroke-width="1.5"/>
+    <text x="855" y="892" text-anchor="middle" font-size="10" font-weight="bold" fill="#2e7d32">MPU6050 六轴IMU</text>
+    <text x="855" y="908" text-anchor="middle" font-size="9" fill="#424242">I2C 地址: 0x68</text>
+    <text x="855" y="922" text-anchor="middle" font-size="9" fill="#424242">角速度 + 加速度</text>
+    <text x="855" y="936" text-anchor="middle" font-size="9" fill="#424242">航向角解算</text>
+    <text x="855" y="950" text-anchor="middle" font-size="8" fill="#546e7a">VCC=3.3V · GND</text>
+    <line x1="855" y1="870" x2="855" y2="820" stroke="#388e3c" stroke-width="1.5"/>
+    <line x1="870" y1="870" x2="870" y2="845" stroke="#388e3c" stroke-width="1.5"/>
+
+    <!-- VL53L0X 左 -->
+    <rect x="960" y="870" width="170" height="100" rx="5" fill="#fff" stroke="#2e7d32" stroke-width="1.5"/>
+    <text x="1045" y="892" text-anchor="middle" font-size="10" font-weight="bold" fill="#2e7d32">VL53L0X (左)</text>
+    <text x="1045" y="908" text-anchor="middle" font-size="9" fill="#424242">I2C 地址: 0x30</text>
+    <text x="1045" y="922" text-anchor="middle" font-size="9" fill="#424242">激光测距 Class1</text>
+    <text x="1045" y="936" text-anchor="middle" font-size="9" fill="#424242">XSHUT → GPIO21</text>
+    <text x="1045" y="950" text-anchor="middle" font-size="8" fill="#546e7a">VCC=3.3V · &lt;1mW</text>
+    <line x1="1045" y1="870" x2="1045" y2="820" stroke="#388e3c" stroke-width="1.5"/>
+    <line x1="1060" y1="870" x2="1060" y2="845" stroke="#388e3c" stroke-width="1.5"/>
+
+    <!-- VL53L0X 右 -->
+    <rect x="1150" y="870" width="170" height="100" rx="5" fill="#fff" stroke="#2e7d32" stroke-width="1.5"/>
+    <text x="1235" y="892" text-anchor="middle" font-size="10" font-weight="bold" fill="#2e7d32">VL53L0X (右)</text>
+    <text x="1235" y="908" text-anchor="middle" font-size="9" fill="#424242">I2C 地址: 0x31</text>
+    <text x="1235" y="922" text-anchor="middle" font-size="9" fill="#424242">激光测距 Class1</text>
+    <text x="1235" y="936" text-anchor="middle" font-size="9" fill="#424242">XSHUT → GPIO38</text>
+    <text x="1235" y="950" text-anchor="middle" font-size="8" fill="#546e7a">VCC=3.3V · &lt;1mW</text>
+    <line x1="1235" y1="870" x2="1235" y2="820" stroke="#388e3c" stroke-width="1.5"/>
+    <line x1="1250" y1="870" x2="1250" y2="845" stroke="#388e3c" stroke-width="1.5"/>
+
+    <!-- I2C 到 ESP32 -->
+    <path d="M 760 820 L 700 820 L 700 420 L 340 420" fill="none" stroke="#388e3c" stroke-width="2" stroke-dasharray="6,3"/>
+    <path d="M 760 845 L 700 845 L 700 455 L 340 455" fill="none" stroke="#388e3c" stroke-width="2" stroke-dasharray="6,3"/>
+    <text x="700" y="630" font-size="9" fill="#388e3c" font-weight="bold" transform="rotate(-90 700 630)">I2C 总线</text>
+  </g>
+
+  <!-- ===================== 电源分发连接线 ===================== -->
+  <g id="power_dist">
+    <!-- 5V 到 ESP32 -->
+    <path d="M 340 280 L 530 280 L 530 660" fill="none" stroke="#f57c00" stroke-width="2.5" stroke-dasharray="6,3"/>
+    <!-- 5V 到 K230 -->
+    <path d="M 340 280 L 340 480 L 1240 480" fill="none" stroke="#f57c00" stroke-width="2.5" stroke-dasharray="6,3"/>
+    <!-- 7.4V 到 TB6612 VM -->
+    <path d="M 230 280 L 230 640 L 760 640" fill="none" stroke="#d32f2f" stroke-width="2.5" stroke-dasharray="6,3"/>
+    <!-- GND 公共 -->
+    <line x1="340" y1="255" x2="340" y2="660" stroke="#616161" stroke-width="2" stroke-dasharray="4,3"/>
+    <line x1="340" y1="660" x2="470" y2="660" stroke="#616161" stroke-width="2" stroke-dasharray="4,3"/>
+  </g>
+
+  <!-- ===================== 图例 ===================== -->
+  <g id="legend">
+    <rect x="1430" y="80" width="340" height="300" rx="8" fill="#fff" stroke="#9e9e9e" stroke-width="1.5"/>
+    <text x="1600" y="105" text-anchor="middle" font-size="13" font-weight="bold" fill="#212121">图例 Legend</text>
+
+    <line x1="1450" y1="130" x2="1490" y2="130" stroke="#d32f2f" stroke-width="3"/>
+    <text x="1500" y="134" class="legend-text">7.4V 动力电源</text>
+
+    <line x1="1450" y1="155" x2="1490" y2="155" stroke="#f57c00" stroke-width="3"/>
+    <text x="1500" y="159" class="legend-text">5V 逻辑/舵机电源</text>
+
+    <line x1="1450" y1="180" x2="1490" y2="180" stroke="#616161" stroke-width="3"/>
+    <text x="1500" y="184" class="legend-text">GND 公共地</text>
+
+    <line x1="1450" y1="205" x2="1490" y2="205" stroke="#1976d2" stroke-width="2.5"/>
+    <text x="1500" y="209" class="legend-text">UART 串口 (115200)</text>
+
+    <line x1="1450" y1="230" x2="1490" y2="230" stroke="#388e3c" stroke-width="2.5"/>
+    <text x="1500" y="234" class="legend-text">I2C 总线 (400kHz)</text>
+
+    <line x1="1450" y1="255" x2="1490" y2="255" stroke="#7b1fa2" stroke-width="2.5"/>
+    <text x="1500" y="259" class="legend-text">PWM/电机驱动</text>
+
+    <line x1="1450" y1="280" x2="1490" y2="280" stroke="#00796b" stroke-width="2.5"/>
+    <text x="1500" y="284" class="legend-text">编码器 AB 相</text>
+
+    <line x1="1450" y1="305" x2="1490" y2="305" stroke="#c2185b" stroke-width="2.5"/>
+    <text x="1500" y="309" class="legend-text">舵机 PWM</text>
+
+    <line x1="1450" y1="330" x2="1490" y2="330" stroke="#455a64" stroke-width="2.5"/>
+    <text x="1500" y="334" class="legend-text">GPIO 控制信号</text>
+
+    <line x1="1450" y1="355" x2="1490" y2="355" stroke="#333" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="1500" y="359" class="legend-text">信号连接 (跨区)</text>
+  </g>
+
+  <!-- ===================== 技术参数表 ===================== -->
+  <g id="specs">
+    <rect x="1430" y="400" width="340" height="350" rx="8" fill="#fff" stroke="#9e9e9e" stroke-width="1.5"/>
+    <text x="1600" y="425" text-anchor="middle" font-size="13" font-weight="bold" fill="#212121">核心技术参数</text>
+
+    <text x="1450" y="450" font-size="10" fill="#424242">主控：K230 (MaixPy) + ESP32-S3</text>
+    <text x="1450" y="468" font-size="10" fill="#424242">摄像头：OV2640 120° DVP</text>
+    <text x="1450" y="486" font-size="10" fill="#424242">电机：1:90 AB相编码器 ×2</text>
+    <text x="1450" y="504" font-size="10" fill="#424242">驱动：TB6612FNG 双路</text>
+    <text x="1450" y="522" font-size="10" fill="#424242">IMU：MPU6050 (I2C 0x68)</text>
+    <text x="1450" y="540" font-size="10" fill="#424242">测距：VL53L0X ×2 (0x30/0x31)</text>
+    <text x="1450" y="558" font-size="10" fill="#424242">舵机：SG90M 数字 ×2</text>
+    <text x="1450" y="576" font-size="10" fill="#424242">电池：2S 7.4V 500mAh</text>
+    <text x="1450" y="594" font-size="10" fill="#424242">供电：5V/2A DC-DC</text>
+    <text x="1450" y="612" font-size="10" fill="#424242">底盘：差速 + 球头万向轮</text>
+    <text x="1450" y="630" font-size="10" fill="#424242">尺寸：≤250×200×180mm</text>
+    <text x="1450" y="648" font-size="10" fill="#424242">重量：≤1.5kg</text>
+    <text x="1450" y="666" font-size="10" fill="#424242">激光：Class1 &lt;1mW</text>
+    <text x="1450" y="684" font-size="10" fill="#424242">通信：UART 115200</text>
+    <text x="1450" y="702" font-size="10" fill="#424242">I2C：400kHz</text>
+    <text x="1450" y="720" font-size="10" fill="#424242">PWM：电机 20kHz / 舵机 50Hz</text>
+  </g>
+
+  <!-- ===================== 注释 ===================== -->
+  <g id="notes">
+    <rect x="30" y="1020" width="1740" height="200" rx="8" fill="#fffde7" stroke="#f9a825" stroke-width="1.5"/>
+    <text x="900" y="1045" text-anchor="middle" font-size="13" font-weight="bold" fill="#f57f17">接线注意事项</text>
+
+    <text x="50" y="1070" font-size="11" fill="#333">1. 电源顺序：先接电池负极(GND)，再接正极；所有模块共地。TB6612 的 VM(7.4V) 与 VCC(5V) 不可接反。</text>
+    <text x="50" y="1090" font-size="11" fill="#333">2. 滤波电容 C1/C2 (1000μF/16V) 就近并联在 TB6612 电源输入端，吸收电机启动尖峰，防止主控复位。</text>
+    <text x="50" y="1110" font-size="11" fill="#333">3. 双 VL53L0X 默认地址均为 0x29，必须通过 XSHUT 引脚逐个复位并改址为 0x30、0x31，否则 I2C 冲突。</text>
+    <text x="50" y="1130" font-size="11" fill="#333">4. MPU6050 开机需静止校准陀螺仪零偏；安装时 Z 轴朝上，X 轴指向车头。</text>
+    <text x="50" y="1150" font-size="11" fill="#333">5. 编码器 AB 相接反会导致方向错误，可在 config.py 中交换 A/B 引脚或在软件中取反。</text>
+    <text x="50" y="1170" font-size="11" fill="#333">6. K230 与 ESP32 串口交叉连接：K230_TX → ESP32_RX(GPIO13)，K230_RX → ESP32_TX(GPIO12)。</text>
+    <text x="50" y="1190" font-size="11" fill="#333">7. 舵机 5V 供电建议增加 470μF 电容；云台走线避开电机动力线，减少干扰。</text>
+    <text x="50" y="1210" font-size="11" fill="#d32f2f">8. 首次上电前务必用万用表确认 5V、3.3V 电压正常，再接入主控，避免烧板。</text>
+  </g>
+</svg>
