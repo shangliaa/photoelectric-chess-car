@@ -7,12 +7,15 @@ import config
 from vision import Vision
 from uart_comm import UartComm
 from strategy import Strategy
+from servo import Gimbal
 
 print('K230 视觉决策启动...')
 
 vision = Vision()
 comm = UartComm()
-strategy = Strategy(vision, comm)
+gimbal = Gimbal()
+gimbal.center()
+strategy = Strategy(vision, comm, gimbal)
 
 # 等待 ESP32 就绪
 for _ in range(20):
@@ -55,5 +58,6 @@ except Exception as e:
     print(f'运行错误: {e}')
 finally:
     comm.cmd_stop()
+    gimbal.center()
     vision.deinit()
     print('已停止')

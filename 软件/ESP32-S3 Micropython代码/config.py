@@ -10,10 +10,6 @@ PIN_UART2_TX = 17       # ESP32 TX -> 驱动板 RX
 PIN_UART2_RX = 18       # ESP32 RX <- 驱动板 TX
 MOTOR_UART_BAUDRATE = 115200
 
-# 二自由度云台舵机（SG90M）
-PIN_SERVO_PAN = 8        # 水平舵机
-PIN_SERVO_TILT = 9       # 俯仰舵机
-
 # I2C 总线（MPU6050 + 2x VL53L0X）
 PIN_I2C_SCL = 10
 PIN_I2C_SDA = 11
@@ -52,14 +48,6 @@ TURN_SPEED_PCT = 40            # 默认转向速度占空比 (%)
 MOVE_STEP_MM = 50              # 每次前进步进距离（mm），视觉伺服用
 TURN_DEADZONE_DEG = 3.0        # 转向死区（度），小于此值不转
 OBSTACLE_THRESHOLD_MM = 150    # 避障距离阈值（mm）
-
-# ===================== 舵机参数 =====================
-SERVO_PAN_MIN = 0              # 水平舵机最小角度
-SERVO_PAN_MAX = 180            # 水平舵机最大角度
-SERVO_TILT_MIN = 30            # 俯仰舵机最小角度（避免碰到底盘）
-SERVO_TILT_MAX = 150           # 俯仰舵机最大角度
-SERVO_PAN_CENTER = 90          # 水平居中
-SERVO_TILT_CENTER = 90         # 俯仰居中
 
 # ===================== IMU 参数 =====================
 IMU_COMP_FILTER_ALPHA = 0.98   # 互补滤波系数（陀螺仪权重）

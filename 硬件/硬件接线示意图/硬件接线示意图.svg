@@ -101,29 +101,21 @@
 
     <!-- 左侧引脚 -->
     <g id="esp32_left_pins">
-      <line x1="380" y1="140" x2="340" y2="140" stroke="#c2185b" stroke-width="2"/>
-      <text x="375" y="137" text-anchor="end" class="pin-label">GPIO8</text>
-      <text x="375" y="150" text-anchor="end" class="pin-name">SERVO_PAN</text>
+      <line x1="380" y1="140" x2="340" y2="140" stroke="#388e3c" stroke-width="2"/>
+      <text x="375" y="137" text-anchor="end" class="pin-label">GPIO10</text>
+      <text x="375" y="150" text-anchor="end" class="pin-name">I2C_SCL</text>
 
-      <line x1="380" y1="175" x2="340" y2="175" stroke="#c2185b" stroke-width="2"/>
-      <text x="375" y="172" text-anchor="end" class="pin-label">GPIO9</text>
-      <text x="375" y="185" text-anchor="end" class="pin-name">SERVO_TILT</text>
+      <line x1="380" y1="175" x2="340" y2="175" stroke="#388e3c" stroke-width="2"/>
+      <text x="375" y="172" text-anchor="end" class="pin-label">GPIO11</text>
+      <text x="375" y="185" text-anchor="end" class="pin-name">I2C_SDA</text>
 
-      <line x1="380" y1="210" x2="340" y2="210" stroke="#388e3c" stroke-width="2"/>
-      <text x="375" y="207" text-anchor="end" class="pin-label">GPIO10</text>
-      <text x="375" y="220" text-anchor="end" class="pin-name">I2C_SCL</text>
+      <line x1="380" y1="210" x2="340" y2="210" stroke="#1976d2" stroke-width="2"/>
+      <text x="375" y="207" text-anchor="end" class="pin-label">GPIO17</text>
+      <text x="375" y="220" text-anchor="end" class="pin-name">UART2_TX →驱动</text>
 
-      <line x1="380" y1="245" x2="340" y2="245" stroke="#388e3c" stroke-width="2"/>
-      <text x="375" y="242" text-anchor="end" class="pin-label">GPIO11</text>
-      <text x="375" y="255" text-anchor="end" class="pin-name">I2C_SDA</text>
-
-      <line x1="380" y1="280" x2="340" y2="280" stroke="#1976d2" stroke-width="2"/>
-      <text x="375" y="277" text-anchor="end" class="pin-label">GPIO17</text>
-      <text x="375" y="290" text-anchor="end" class="pin-name">UART2_TX →驱动</text>
-
-      <line x1="380" y1="315" x2="340" y2="315" stroke="#1976d2" stroke-width="2"/>
-      <text x="375" y="312" text-anchor="end" class="pin-label">GPIO18</text>
-      <text x="375" y="325" text-anchor="end" class="pin-name">UART2_RX ←驱动</text>
+      <line x1="380" y1="245" x2="340" y2="245" stroke="#1976d2" stroke-width="2"/>
+      <text x="375" y="242" text-anchor="end" class="pin-label">GPIO18</text>
+      <text x="375" y="255" text-anchor="end" class="pin-name">UART2_RX ←驱动</text>
     </g>
 
     <!-- 右侧引脚 -->
@@ -153,9 +145,9 @@
 
     <!-- ESP32 内部说明 -->
     <text x="530" y="540" text-anchor="middle" font-size="11" fill="#1565c0" font-weight="bold">MicroPython</text>
-    <text x="530" y="558" text-anchor="middle" font-size="10" fill="#424242">航迹推算 · 舵机控制</text>
-    <text x="530" y="572" text-anchor="middle" font-size="10" fill="#424242">传感采集 · 串口通信</text>
-    <text x="530" y="586" text-anchor="middle" font-size="10" fill="#424242">运动指令 · 避障</text>
+    <text x="530" y="558" text-anchor="middle" font-size="10" fill="#424242">航迹推算 · 传感采集</text>
+    <text x="530" y="572" text-anchor="middle" font-size="10" fill="#424242">串口通信 · 运动指令</text>
+    <text x="530" y="586" text-anchor="middle" font-size="10" fill="#424242">避障执行</text>
     <text x="530" y="610" text-anchor="middle" font-size="9" fill="#546e7a">Type-C · 预焊排针</text>
   </g>
 
@@ -178,16 +170,25 @@
     <text x="1240" y="240" text-anchor="middle" font-size="11" fill="#2e7d32" font-weight="bold">MaixPy 固件</text>
     <text x="1240" y="258" text-anchor="middle" font-size="10" fill="#424242">NPU 视觉算力</text>
     <text x="1240" y="272" text-anchor="middle" font-size="10" fill="#424242">棋子识别 · 路径规划</text>
-    <text x="1240" y="286" text-anchor="middle" font-size="10" fill="#424242">决策输出 · 串口指令</text>
+    <text x="1240" y="286" text-anchor="middle" font-size="10" fill="#424242">决策输出 · 云台控制</text>
+
+    <!-- 舵机 PWM 引脚（K230 直接控制云台） -->
+    <line x1="1080" y1="330" x2="1040" y2="330" stroke="#c2185b" stroke-width="2"/>
+    <text x="1075" y="327" text-anchor="end" class="pin-label">GPIO42</text>
+    <text x="1075" y="340" text-anchor="end" class="pin-name">PWM0 →PAN</text>
+
+    <line x1="1080" y1="365" x2="1040" y2="365" stroke="#c2185b" stroke-width="2"/>
+    <text x="1075" y="362" text-anchor="end" class="pin-label">GPIO43</text>
+    <text x="1075" y="375" text-anchor="end" class="pin-name">PWM1 →TILT</text>
 
     <!-- UART 引脚 -->
-    <line x1="1080" y1="330" x2="1040" y2="330" stroke="#1976d2" stroke-width="2"/>
-    <text x="1075" y="327" text-anchor="end" class="pin-label">UART_RX</text>
-    <text x="1075" y="340" text-anchor="end" class="pin-name">←ESP32_TX</text>
+    <line x1="1080" y1="400" x2="1040" y2="400" stroke="#1976d2" stroke-width="2"/>
+    <text x="1075" y="397" text-anchor="end" class="pin-label">UART_RX</text>
+    <text x="1075" y="410" text-anchor="end" class="pin-name">←ESP32_TX</text>
 
-    <line x1="1080" y1="365" x2="1040" y2="365" stroke="#1976d2" stroke-width="2"/>
-    <text x="1075" y="362" text-anchor="end" class="pin-label">UART_TX</text>
-    <text x="1075" y="375" text-anchor="end" class="pin-name">→ESP32_RX</text>
+    <line x1="1080" y1="435" x2="1040" y2="435" stroke="#1976d2" stroke-width="2"/>
+    <text x="1075" y="432" text-anchor="end" class="pin-label">UART_TX</text>
+    <text x="1075" y="445" text-anchor="end" class="pin-name">→ESP32_RX</text>
 
     <!-- 电源 -->
     <line x1="1240" y1="460" x2="1240" y2="480" stroke="#f57c00" stroke-width="2.5"/>
@@ -201,12 +202,12 @@
   <!-- ===================== UART 连接线 ===================== -->
   <g id="uart_lines">
     <!-- ESP32 TX -> K230 RX -->
-    <path d="M 720 210 L 1040 210 L 1040 330 L 1080 330" fill="none" stroke="#1976d2" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M 720 210 L 1040 210 L 1040 400 L 1080 400" fill="none" stroke="#1976d2" stroke-width="2" marker-end="url(#arrow)"/>
     <text x="880" y="205" text-anchor="middle" font-size="10" fill="#1976d2" font-weight="bold">UART_TX (GPIO12) → RX</text>
 
     <!-- K230 TX -> ESP32 RX -->
-    <path d="M 1080 365 L 1040 365 L 1040 245 L 720 245" fill="none" stroke="#1976d2" stroke-width="2" marker-end="url(#arrow)"/>
-    <text x="880" y="360" text-anchor="middle" font-size="10" fill="#1976d2" font-weight="bold">UART_RX (GPIO13) ← TX</text>
+    <path d="M 1080 435 L 1040 435 L 1040 245 L 720 245" fill="none" stroke="#1976d2" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="880" y="430" text-anchor="middle" font-size="10" fill="#1976d2" font-weight="bold">UART_RX (GPIO13) ← TX</text>
 
     <text x="880" y="300" text-anchor="middle" font-size="11" fill="#1565c0" font-weight="bold">串口通信 115200 bps</text>
     <text x="880" y="316" text-anchor="middle" font-size="10" fill="#424242">文本行协议，\n 结尾</text>
@@ -281,15 +282,17 @@
 
     <rect x="400" y="800" width="130" height="50" rx="5" fill="#fff" stroke="#ad1457" stroke-width="1.5"/>
     <text x="465" y="820" text-anchor="middle" font-size="10" font-weight="bold" fill="#ad1457">水平舵机 PAN</text>
-    <text x="465" y="836" text-anchor="middle" font-size="9" fill="#424242">PWM ← GPIO8 · 5V</text>
+    <text x="465" y="836" text-anchor="middle" font-size="9" fill="#424242">PWM ← K230 GPIO42 · 5V</text>
 
     <rect x="540" y="800" width="130" height="50" rx="5" fill="#fff" stroke="#ad1457" stroke-width="1.5"/>
     <text x="605" y="820" text-anchor="middle" font-size="10" font-weight="bold" fill="#ad1457">俯仰舵机 TILT</text>
-    <text x="605" y="836" text-anchor="middle" font-size="9" fill="#424242">PWM ← GPIO9 · 5V</text>
+    <text x="605" y="836" text-anchor="middle" font-size="9" fill="#424242">PWM ← K230 GPIO43 · 5V</text>
 
-    <!-- 舵机到ESP32连接线 -->
-    <line x1="465" y1="800" x2="465" y2="385" stroke="#c2185b" stroke-width="1.5" stroke-dasharray="5,3"/>
-    <line x1="605" y1="800" x2="605" y2="385" stroke="#c2185b" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <!-- 舵机到K230连接线（K230直接控制云台） -->
+    <path d="M 465 800 L 465 700 L 1040 700 L 1040 330 L 1080 330" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="750" y="695" font-size="9" fill="#c2185b" font-weight="bold">K230 PWM0 → 云台PAN</text>
+    <path d="M 605 800 L 605 720 L 1040 720 L 1040 365 L 1080 365" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="750" y="715" font-size="9" fill="#c2185b" font-weight="bold">K230 PWM1 → 云台TILT</text>
   </g>
 
   <!-- ===================== I2C 传感器总线 ===================== -->
@@ -424,7 +427,7 @@
     <text x="50" y="1130" font-size="11" fill="#333">4. MPU6050 开机需静止校准陀螺仪零偏；安装时 Z 轴朝上，X 轴指向车头。</text>
     <text x="50" y="1150" font-size="11" fill="#333">5. 四路驱动板通过 UART2(GPIO17=TX, GPIO18=RX) 与 ESP32 通信，内置 PID 与编码器，ESP32 无需 GPIO PWM/中断。</text>
     <text x="50" y="1170" font-size="11" fill="#333">6. K230 与 ESP32 串口交叉连接：K230_TX → ESP32_RX(GPIO13)，K230_RX → ESP32_TX(GPIO12)。</text>
-    <text x="50" y="1190" font-size="11" fill="#333">7. 舵机 5V 供电建议增加 470μF 电容；云台走线避开电机动力线，减少干扰。</text>
+    <text x="50" y="1190" font-size="11" fill="#333">7. 舵机由 K230 GPIO42/43(PWM0/1) 直接控制，5V 供电建议增加 470μF 电容；云台走线避开电机动力线，减少干扰。</text>
     <text x="50" y="1210" font-size="11" fill="#333">8. 驱动板上电配置：$mtype:3#(TT带编码器)、$mphase:48#、$mline:13#、$wdiameter:65#，断电保存，M1=左前 M2=左后 M3=右前 M4=右后。</text>
     <text x="50" y="1230" font-size="11" fill="#d32f2f">9. 首次上电前务必用万用表确认 5V、3.3V 电压正常，再接入主控，避免烧板。</text>
   </g>

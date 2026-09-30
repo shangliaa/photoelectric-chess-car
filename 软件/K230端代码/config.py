@@ -35,3 +35,13 @@ GOAL_OVERLAP_RATIO = 0.5   # 棋子与球门重叠比例阈值，超过判定进
 
 # 串口
 UART_BAUDRATE = 115200
+
+# 二自由度云台舵机（K230 直接控制，接散热片旁 12pin 排针）
+PIN_SERVO_PAN = 42        # 水平舵机 GPIO42 (PWM0)
+PIN_SERVO_TILT = 43       # 俯仰舵机 GPIO43 (PWM1)
+SERVO_PAN_MIN = 0
+SERVO_PAN_MAX = 180
+SERVO_TILT_MIN = 30       # 避免碰到底盘
+SERVO_TILT_MAX = 150
+SERVO_PAN_CENTER = 90
+SERVO_TILT_CENTER = 90

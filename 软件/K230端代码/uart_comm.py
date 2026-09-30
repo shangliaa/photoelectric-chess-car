@@ -28,9 +28,6 @@ class UartComm:
     def cmd_stop(self):
         self.send('STOP')
 
-    def cmd_servo(self, pan, tilt):
-        self.send(f'SERVO,{pan},{tilt}')
-
     def cmd_pose(self):
         self.send('POSE')
 

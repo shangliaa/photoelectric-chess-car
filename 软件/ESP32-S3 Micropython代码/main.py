@@ -5,7 +5,6 @@ import time
 from machine import I2C, Pin
 import config
 from motion import MotionController
-from servo import Gimbal
 from uart_protocol import Protocol
 
 print('ESP32-S3 运动控制启动...')
@@ -18,11 +17,8 @@ print('I2C 设备:', [hex(a) for a in i2c.scan()])
 motion = MotionController(i2c)
 # 配置四路智能电机驱动板参数（上电执行一次，驱动板断电保存）
 motion.motors.configure()
-# 云台
-gimbal = Gimbal()
-gimbal.center()
-# 通信协议
-proto = Protocol(motion, gimbal)
+# 通信协议（云台由 K230 直接控制）
+proto = Protocol(motion)
 
 print('初始化完成，等待 K230 指令...')
 proto.send('READY')

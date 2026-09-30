@@ -5,9 +5,7 @@
 #   MOVE,<dist_mm>,<speed>     前进指定距离
 #   TURN,<angle_deg>,<speed>   原地转向
 #   STOP                       立即停止
-#   SERVO,<pan>,<tilt>         云台角度
 #   POSE                       请求位姿
-#   SCAN                       云台扫描
 #
 # 发送（ESP32 -> K230）:
 #   POSE,<x>,<y>,<heading>     位姿回传
@@ -19,11 +17,10 @@ import config
 
 
 class Protocol:
-    def __init__(self, motion, gimbal):
+    def __init__(self, motion):
         self._uart = UART(1, baudrate=config.UART_BAUDRATE,
                           tx=Pin(config.PIN_UART_TX), rx=Pin(config.PIN_UART_RX))
         self._motion = motion
-        self._gimbal = gimbal
         self._rx_buf = ''
 
     def send(self, text):
@@ -70,25 +67,9 @@ class Protocol:
             elif cmd == 'STOP':
                 self._motion.stop()
                 self.send_done('STOP')
-            elif cmd == 'SERVO' and len(parts) >= 3:
-                pan = int(parts[1])
-                tilt = int(parts[2])
-                self._gimbal.set(pan, tilt)
-                self.send_done('SERVO')
             elif cmd == 'POSE':
                 self.send_pose()
-            elif cmd == 'SCAN':
-                self._scan()
             else:
                 self.send(f'ERR,unknown:{line}')
         except Exception as e:
             self.send(f'ERR,{e}')
-
-    def _scan(self):
-        """云台水平扫描一周后回中。"""
-        import time
-        for a in range(30, 151, 30):
-            self._gimbal.pan.set_angle(a)
-            time.sleep_ms(300)
-        self._gimbal.center()
-        self.send_done('SCAN')

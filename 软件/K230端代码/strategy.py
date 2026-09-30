@@ -5,12 +5,14 @@ import time
 import config
 from vision import Vision
 from uart_comm import UartComm
+from servo import Gimbal
 
 
 class Strategy:
-    def __init__(self, vision: Vision, comm: UartComm):
+    def __init__(self, vision: Vision, comm: UartComm, gimbal: Gimbal):
         self.vision = vision
         self.comm = comm
+        self.gimbal = gimbal
         self.state = 'SEARCH_GOAL'   # SEARCH_GOAL / SEARCH_PIECE / ALIGN / PUSH / SCORE / REVERSE
         self.target_piece = None
         self.goal = None
@@ -56,7 +58,7 @@ class Strategy:
             self._search_angle += 30
             if self._search_angle > 180:
                 self._search_angle = -180
-            self.comm.cmd_servo(90 + self._search_angle // 2, 90)
+            self.gimbal.set(90 + self._search_angle // 2, 90)
             time.sleep_ms(300)
             if self._search_angle % 120 == 0:
                 self.comm.cmd_turn(45)
