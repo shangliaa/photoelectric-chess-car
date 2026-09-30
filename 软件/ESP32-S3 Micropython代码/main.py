@@ -16,6 +16,8 @@ print('I2C 设备:', [hex(a) for a in i2c.scan()])
 
 # 运动控制器（内含电机、编码器、IMU、测距）
 motion = MotionController(i2c)
+# 配置四路智能电机驱动板参数（上电执行一次，驱动板断电保存）
+motion.motors.configure()
 # 云台
 gimbal = Gimbal()
 gimbal.center()

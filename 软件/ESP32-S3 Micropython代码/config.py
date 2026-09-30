@@ -1,21 +1,14 @@
-# config.py — ESP32-S3 全局配置（引脚、物理参数、PID 参数）
+# config.py — ESP32-S3 全局配置（引脚、物理参数、运动参数）
 # 所有可调参数集中在此，接线改动只需修改本文件
+# 底盘：四驱轮式小车（4× TT 编码器电机，四路智能电机驱动模块）
+# 电机驱动：四路智能驱动板（AT8236×4 + MCU 协处理器），UART2 通信，内置 PID + 编码器
 
 # ===================== 引脚定义 =====================
-# TB6612FNG 电机驱动
-PIN_MOTOR_L_PWM = 4      # 左电机 PWM
-PIN_MOTOR_L_IN1 = 5      # 左电机方向 1
-PIN_MOTOR_L_IN2 = 6      # 左电机方向 2
-PIN_MOTOR_R_PWM = 7      # 右电机 PWM
-PIN_MOTOR_R_IN1 = 15     # 右电机方向 1
-PIN_MOTOR_R_IN2 = 16     # 右电机方向 2
-PIN_MOTOR_STBY = 14      # TB6612 待机使能（若直连3.3V可设为 None）
-
-# AB 相光电编码器
-PIN_ENCODER_L_A = 1      # 左编码器 A 相
-PIN_ENCODER_L_B = 2      # 左编码器 B 相
-PIN_ENCODER_R_A = 41     # 右编码器 A 相
-PIN_ENCODER_R_B = 42     # 右编码器 B 相
+# 四路智能电机驱动模块（UART2 通信，驱动内置 PID 与编码器读取）
+#   M1=左前, M2=左后, M3=右前, M4=右后
+PIN_UART2_TX = 17       # ESP32 TX -> 驱动板 RX
+PIN_UART2_RX = 18       # ESP32 RX <- 驱动板 TX
+MOTOR_UART_BAUDRATE = 115200
 
 # 二自由度云台舵机（SG90M）
 PIN_SERVO_PAN = 8        # 水平舵机
@@ -30,27 +23,28 @@ I2C_FREQ = 400000
 PIN_VL53L0X_L_XSHUT = 21
 PIN_VL53L0X_R_XSHUT = 38
 
-# 与 K230 通信的串口
+# 与 K230 通信的串口（UART1）
 PIN_UART_TX = 12         # ESP32 TX -> K230 RX
 PIN_UART_RX = 13         # ESP32 RX <- K230 TX
 UART_BAUDRATE = 115200
 
-# ===================== 物理参数 =====================
-WHEEL_DIAMETER_MM = 65.0       # 车轮直径（mm），按实际测量修改
-WHEEL_BASE_MM = 140.0          # 左右轮距（mm），按实际测量修改
-# 编码器线数：电机 11 极对 × 减速比 90 = 每圈 990 脉冲（AB相4倍频后 3960）
-# 若电机规格不同请修改此值
-ENCODER_PPR = 11 * 90          # 每圈脉冲数（未4倍频）
-PULSES_PER_REV = ENCODER_PPR * 4   # AB相4倍频后每圈脉冲数
+# ===================== 电机驱动配置 =====================
+# 驱动板电机参数（上电配置一次，驱动板断电保存）
+MOTOR_TYPE = 3           # 3: TT电机(带编码器)
+MOTOR_GEAR_RATIO = 48    # 减速比
+MOTOR_PHASE_LINES = 13   # 磁环线数
+MOTOR_WHEEL_DIAMETER = 65  # 轮子直径(mm)
+MOTOR_DEADZONE = 1250    # PWM 死区
+# 速度指令范围：-1000~1000（驱动板内部 PID）
+MOTOR_SPEED_MAX = 1000
 
-# ===================== 电机 PID 参数 =====================
-# 速度环 PID（单位：脉冲/周期 -> 目标 PWM 0-1000）
-MOTOR_KP = 1.2
-MOTOR_KI = 0.15
-MOTOR_KD = 0.02
-MOTOR_PID_INTERVAL_MS = 20     # PID 计算周期
-MOTOR_PWM_MAX = 1000           # PWM 最大值（duty_u16 范围 0-1023 时可调）
-MOTOR_PWM_MIN = 0
+# ===================== 物理参数 =====================
+# 四驱轮式小车（65mm 橡胶轮胎，底盘宽 148mm）
+WHEEL_DIAMETER_MM = 65.0       # 车轮直径（mm），TT 底盘标配 65mm 橡胶轮
+WHEEL_BASE_MM = 148.0          # 左右轮距（mm），按底盘实际宽度修改
+# TT 编码器电机：磁环 11 极对 × 减速比 48 = 每圈 528 脉冲（AB相4倍频后 2112）
+ENCODER_PPR = 11 * 48          # 每圈脉冲数（未4倍频）
+PULSES_PER_REV = ENCODER_PPR * 4   # AB相4倍频后每圈脉冲数
 
 # ===================== 运动参数 =====================
 MOVE_SPEED_PCT = 50            # 默认前进速度占空比 (%)
