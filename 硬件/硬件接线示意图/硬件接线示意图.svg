@@ -400,7 +400,7 @@
 
     <text x="1450" y="450" font-size="10" fill="#424242">主控：K230 (MaixPy) + ESP32-S3</text>
     <text x="1450" y="468" font-size="10" fill="#424242">摄像头：K230 板载集成</text>
-    <text x="1450" y="486" font-size="10" fill="#424242">电机：TT编码器 1:48 ×4</text>
+    <text x="1450" y="486" font-size="10" fill="#424242">电机：TT编码器 1:45 ×4</text>
     <text x="1450" y="504" font-size="10" fill="#424242">驱动：四路智能驱动 (AT8236×4+MCU)</text>
     <text x="1450" y="522" font-size="10" fill="#424242">IMU：MPU6050 (I2C 0x68)</text>
     <text x="1450" y="540" font-size="10" fill="#424242">测距：VL53L0X ×2 (0x30/0x31)</text>
@@ -428,7 +428,7 @@
     <text x="50" y="1150" font-size="11" fill="#333">5. 四路驱动板通过 UART2(GPIO17=TX, GPIO18=RX) 与 ESP32 通信，内置 PID 与编码器，ESP32 无需 GPIO PWM/中断。</text>
     <text x="50" y="1170" font-size="11" fill="#333">6. K230 与 ESP32 串口交叉连接：K230_TX → ESP32_RX(GPIO13)，K230_RX → ESP32_TX(GPIO12)。</text>
     <text x="50" y="1190" font-size="11" fill="#333">7. 舵机由 K230 GPIO42/43(PWM0/1) 直接控制，5V 供电建议增加 470μF 电容；云台走线避开电机动力线，减少干扰。</text>
-    <text x="50" y="1210" font-size="11" fill="#333">8. 驱动板上电配置：$mtype:3#(TT带编码器)、$mphase:48#、$mline:13#、$wdiameter:65#，断电保存，M1=左前 M2=左后 M3=右前 M4=右后。</text>
+    <text x="50" y="1210" font-size="11" fill="#333">8. 驱动板上电配置：$mtype:3#(TT带编码器)、$mphase:45#、$mline:13#、$wdiameter:65#，断电保存，M1=左前 M2=左后 M3=右前 M4=右后。</text>
     <text x="50" y="1230" font-size="11" fill="#d32f2f">9. 首次上电前务必用万用表确认 5V、3.3V 电压正常，再接入主控，避免烧板。</text>
   </g>
 </svg>

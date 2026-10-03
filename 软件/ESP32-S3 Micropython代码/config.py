@@ -27,7 +27,7 @@ UART_BAUDRATE = 115200
 # ===================== 电机驱动配置 =====================
 # 驱动板电机参数（上电配置一次，驱动板断电保存）
 MOTOR_TYPE = 3           # 3: TT电机(带编码器)
-MOTOR_GEAR_RATIO = 48    # 减速比
+MOTOR_GEAR_RATIO = 45    # 减速比（13线金属单轴TT电机 1:45）
 MOTOR_PHASE_LINES = 13   # 磁环线数
 MOTOR_WHEEL_DIAMETER = 65  # 轮子直径(mm)
 MOTOR_DEADZONE = 1250    # PWM 死区
@@ -38,8 +38,8 @@ MOTOR_SPEED_MAX = 1000
 # 四驱轮式小车（65mm 橡胶轮胎，底盘宽 148mm）
 WHEEL_DIAMETER_MM = 65.0       # 车轮直径（mm），TT 底盘标配 65mm 橡胶轮
 WHEEL_BASE_MM = 148.0          # 左右轮距（mm），按底盘实际宽度修改
-# TT 编码器电机：磁环 11 极对 × 减速比 48 = 每圈 528 脉冲（AB相4倍频后 2112）
-ENCODER_PPR = 11 * 48          # 每圈脉冲数（未4倍频）
+# TT 编码器电机（13线金属单轴）：磁环 13 线 × 减速比 45 = 每圈 585 脉冲（AB相4倍频后 2340）
+ENCODER_PPR = 13 * 45          # 每圈脉冲数（未4倍频）
 PULSES_PER_REV = ENCODER_PPR * 4   # AB相4倍频后每圈脉冲数
 
 # ===================== 运动参数 =====================
