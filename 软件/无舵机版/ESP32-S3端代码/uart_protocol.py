@@ -1,5 +1,5 @@
 # uart_protocol.py — K230 <-> ESP32 串口通信协议
-# 文本行协议，'\\n' 结尾
+# 文本行协议，'\n' 结尾
 #
 # 接收（K230 -> ESP32）:
 #   MOVE,<dist_mm>,<speed>     前进指定距离

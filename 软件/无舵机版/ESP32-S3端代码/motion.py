@@ -1,23 +1,23 @@
 # motion.py — 高层运动控制
 # 提供：前进指定距离、转向指定角度、航迹推算、避障
 # 非阻塞设计：update() 在主循环周期调用，move_distance/turn_angle 分步执行
+# 航向来源：9 轴 IMU 板载融合输出的 YAW（无需软件积分，漂移小）
 
 import math
 import time
 import config
 from motor import DualMotor
-from imu import MPU6050
-from vl53l0x import DualRanging
+from imu import YbImu
+from tinyf import TinyF
 
 PULSES_PER_MM = config.PULSES_PER_REV / (math.pi * config.WHEEL_DIAMETER_MM)
 
 
 class MotionController:
     def __init__(self, i2c):
-        self.motors = DualMotor()
-        self.imu = MPU6050(i2c)
-        self.imu.calibrate()
-        self.ranging = DualRanging(i2c)
+        self.motors = DualMotor(i2c)
+        self.imu = YbImu(i2c)
+        self.ranging = TinyF()
         # 航迹推算
         self.x = 0.0
         self.y = 0.0
@@ -80,13 +80,13 @@ class MotionController:
     def update(self):
         # IMU 航向更新
         self.imu.update_heading()
-        # 电机 PID
+        # 电机编码器轮询（驱动板内置 PID，无需软件调速）
         self.motors.update()
         # 航迹推算
         self.update_odometry()
 
         if self._state == 'moving':
-            # 避障检测
+            # 避障检测（TinyF 单模块，车头中央）
             self._check_obstacle()
             if self.obstacle:
                 self.stop()
@@ -119,9 +119,8 @@ class MotionController:
             self.motors.set_speeds(direction * speed, -direction * speed)
 
     def _check_obstacle(self):
-        l, r = self.ranging.read()
-        if (l > 0 and l < config.OBSTACLE_THRESHOLD_MM) or \
-           (r > 0 and r < config.OBSTACLE_THRESHOLD_MM):
+        d = self.ranging.read_range()
+        if 0 < d < config.OBSTACLE_THRESHOLD_MM:
             self.obstacle = True
         else:
             self.obstacle = False
