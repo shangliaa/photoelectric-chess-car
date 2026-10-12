@@ -48,22 +48,37 @@ class MotorDriver:
         return self._i2c.readfrom_mem(self._addr, reg, n)
 
     # ---------- 配置 ----------
+    def _safe_write(self, reg, data, retries=3):
+        """写寄存器，失败重试；全部失败返回 False 但不抛异常。"""
+        for _ in range(retries):
+            try:
+                self._write_reg(reg, data)
+                return True
+            except OSError:
+                time.sleep_ms(20)
+        return False
+
     def configure(self):
-        """上电写入电机参数（驱动板断电保存，重复写入无害）。"""
-        self._write_reg(REG_MOTOR_TYPE, [config.MOTOR_TYPE])
-        time.sleep_ms(10)
+        """上电写入电机参数（驱动板断电保存，重复写入无害）。
+        若供电不稳导致写Flash失败，仅告警不崩溃——速度/PWM 控制仍可用。"""
+        ok = True
+        ok &= self._safe_write(REG_MOTOR_TYPE, [config.MOTOR_TYPE])
+        time.sleep_ms(20)
         dz = config.MOTOR_DEADZONE & 0xFFFF
-        self._write_reg(REG_DEADZONE, [(dz >> 8) & 0xFF, dz & 0xFF])
-        time.sleep_ms(10)
+        ok &= self._safe_write(REG_DEADZONE, [(dz >> 8) & 0xFF, dz & 0xFF])
+        time.sleep_ms(20)
         pl = config.MOTOR_PHASE_LINES & 0xFFFF
-        self._write_reg(REG_PULSE_LINES, [(pl >> 8) & 0xFF, pl & 0xFF])
-        time.sleep_ms(10)
+        ok &= self._safe_write(REG_PULSE_LINES, [(pl >> 8) & 0xFF, pl & 0xFF])
+        time.sleep_ms(20)
         gr = config.MOTOR_GEAR_RATIO & 0xFFFF
-        self._write_reg(REG_GEAR_RATIO, [(gr >> 8) & 0xFF, gr & 0xFF])
-        time.sleep_ms(10)
-        self._write_reg(REG_WHEEL_DIA, list(struct.pack('<f', config.MOTOR_WHEEL_DIAMETER)))
-        time.sleep_ms(10)
-        print('电机驱动参数已写入(I2C)')
+        ok &= self._safe_write(REG_GEAR_RATIO, [(gr >> 8) & 0xFF, gr & 0xFF])
+        time.sleep_ms(20)
+        ok &= self._safe_write(REG_WHEEL_DIA, list(struct.pack('<f', config.MOTOR_WHEEL_DIAMETER)))
+        time.sleep_ms(20)
+        if ok:
+            print('电机驱动参数已写入(I2C)')
+        else:
+            print('警告：部分电机参数写入失败（供电偏低），电机仍可运行，建议使用7.4V电池后重新配置')
 
     # ---------- 控制 ----------
     def set_speeds(self, m1, m2, m3, m4):

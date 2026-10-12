@@ -28,3 +28,8 @@ Desktop.ini
 *.tmp
 *.bak
 *.log
+
+# ===== 模板图制作工具（本地依赖和用户照片不入库）=====
+软件/模板图制作工具/node_modules/
+软件/模板图制作工具/photos/
+软件/模板图制作工具/output/

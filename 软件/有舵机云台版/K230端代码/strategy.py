@@ -6,6 +6,7 @@ import config
 from vision import Vision
 from uart_comm import UartComm
 from servo import Gimbal
+from vision_ocr import PieceOCR
 
 
 class Strategy:
@@ -13,8 +14,10 @@ class Strategy:
         self.vision = vision
         self.comm = comm
         self.gimbal = gimbal
+        self.ocr = PieceOCR()                # 棋子字符识别器
         self.state = 'SEARCH_GOAL'   # SEARCH_GOAL / SEARCH_PIECE / ALIGN / PUSH / SCORE / REVERSE
         self.target_piece = None
+        self.target_value = 0         # 当前目标棋子的分值
         self.goal = None
         self.goal_cx = config.IMG_CENTER_X
         self._search_angle = 0
@@ -72,10 +75,31 @@ class Strategy:
             self.comm.cmd_turn(30)
             self.comm.wait_done('TURN', timeout_ms=1500)
             return 'NO_PIECE_TURN'
-        # 选最居中的棋子作为目标
-        self.target_piece = min(pieces, key=lambda p: abs(p['cx'] - config.IMG_CENTER_X))
-        self.state = 'ALIGN'
-        return f'FOUND_PIECE cx={self.target_piece["cx"]}'
+
+        # 用 OCR 识别每个棋子的字符和分值，优先选高分棋子
+        if self.ocr.available:
+            recognized = self.ocr.recognize_all(img, pieces)
+            # 筛选出识别成功的棋子，按分值降序，同分选最居中
+            known = [r for r in recognized if r['value'] > 0]
+            if known:
+                known.sort(key=lambda r: (-r['value'],
+                                          abs(r['blob']['cx'] - config.IMG_CENTER_X)))
+                best = known[0]
+                self.target_piece = best['blob']
+                self.target_value = best['value']
+                self.state = 'ALIGN'
+                return f'FOUND_PIECE type={best["type"]} val={best["value"]} cx={self.target_piece["cx"]}'
+            # 全部识别失败：回退到选最居中
+            self.target_piece = min(pieces, key=lambda p: abs(p['cx'] - config.IMG_CENTER_X))
+            self.target_value = 0
+            self.state = 'ALIGN'
+            return f'FOUND_PIECE(unknown) cx={self.target_piece["cx"]}'
+        else:
+            # 无 OCR：选最居中的棋子
+            self.target_piece = min(pieces, key=lambda p: abs(p['cx'] - config.IMG_CENTER_X))
+            self.target_value = 0
+            self.state = 'ALIGN'
+            return f'FOUND_PIECE cx={self.target_piece["cx"]}'
 
     # ---------- 状态：对准棋子 ----------
     def _do_align(self, img, pieces):
